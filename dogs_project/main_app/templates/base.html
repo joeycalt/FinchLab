@@ -14,7 +14,7 @@
     <body >
         <nav class="navbar is-black" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/">Dogs</a>
+                <a class="navbar-item" href="/">Home</a>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -23,10 +23,22 @@
             </div>
             <div class="navbar-menu navbar-start">
                 <a class="navbar-item" href="/about">About</a>
+                <a class="navbar-item" href="/dogs">My Dogs</a>
+                <a class="navbar-item" href="/dogs/new">Add a Doggo</a>
             </div>
-            <div class="navbar-menu navbar-end">
-                <a class="navbar-item" href="/dogs">Dogs</a>
-            </div>
+            
+            
+            {% if user.is_authenticated %}
+                <div class="navbar-menu navbar-end">
+                    <span class="navbar-item">Welcome: {{user.username}}</span>
+                    <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+            {% else %}
+                <div class="navbar-menu navbar-end">
+                    <a class="navbar-item" href="{% url 'login' %}">Log In</a>
+                    <a class="navbar-item" href="{% url 'signup' %}">Sign Up</a>
+                </div>
+            {% endif %}
         </nav>
         <div class="container">
 

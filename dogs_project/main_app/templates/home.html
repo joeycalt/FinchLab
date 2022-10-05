@@ -1,7 +1,29 @@
-{% extends 'base.html' %}
-{% block title %}
-Home
-{% endblock %}
+{% extends 'base.html' %} 
 {% block content %}
-<h1>Dogs Home</h1>
+<div class="home__favorite">
+    
+    <div class="favorite mb-5">
+        <h3 class="title is-3 has-text-success">Favorites List</h3>
+        <hr />
+        {% for favorite in favorites %}
+            {% for toy in favorite.toys.all %}
+
+                <div class="toy">
+                    <span>{{forloop.counter}}</span>
+                    <span><b>{{toy.title}}</b></span>
+                    <span>
+                        <a href="{% url 'favorite_list_assoc' favorite.pk toy.pk %}?assoc=remove" class="button is-danger is-outlined">
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                        </a>
+                    </span>
+                </div>
+
+            {% endfor %}
+        </div>
+    {% empty %} 
+        <div class="favorite mb-5">"There are no toys in this Favorites List"</div>
+    {% endfor %}
+</div>
 {% endblock %}
