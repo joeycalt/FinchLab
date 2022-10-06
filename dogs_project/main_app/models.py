@@ -30,7 +30,7 @@ class Toy(models.Model):
 class Favorite(models.Model):
 
     title = models.CharField(max_length=150)
-    top = models.ManyToManyField(Toy)
+    toys = models.ManyToManyField(Toy)
 
     def __str__(self):
         return self.title

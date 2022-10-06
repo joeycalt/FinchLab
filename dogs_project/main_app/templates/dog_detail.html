@@ -1,7 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% block title %} {{dog.name}}'s favorite toys {% endblock %}
 {% block content %}
-<h1>{{dog.name}}</h1>
 <div class="detail__img">
     <img src="{{dog.img}}" alt="{{dog.name}}" />
 </div>
@@ -11,115 +10,104 @@
         <span class="icon has-text-info">
             <i class="fas fa-check-circle"></i>
         </span>
-        <span>Purebread</span>
+        <span>Purebred</span>
     </div>
     {% endif %}
     <h1 class="title">{{dog.name}}</h1>
 </div>
 <div class="detail__container">
     <div class="detail__dogs mb-5">
-
+        
         <h3 class="title is-3">Toys</h3>
-        {% for toy in favorite.toys.all %}
-        <div class="toy">
-        <span>{{forloop.counter}}</span>
-        <span><b>{{toy.title}}</b></span>
-        </div>
-        </div>
+        <form class="mb-5" action="{% url 'toy_create' dog.pk %}" method="post">
+            {% csrf_token %}
+            <div class="field has-addons">
+            <div class="control">
+                <input
+                class="input"
+                type="text"
+                name="title"
+                placeholder="Title"
+                required
+                />
+            </div>
+            <div class="control">
+                <input
+                class="input"
+                type="text"
+                name="length"
+                placeholder="Image"
+                min="1"
+                required
+                />
+            </div>
+            <div class="control">
+                <input class="button is-primary" type="submit" value="Add Toy" />
+            </div>
+            </div>
+        </form>
+        <div>
+        <a href="{% url 'dog_update' dog.pk %}" class="button is-info">
+            <span class="icon">
+              <i class="fas fa-edit">Edit</i>
+            </span>
+          </a>
+        <a href="{% url 'dog_delete' dog.pk %}" class="button is-danger">
+          <span class="icon">
+            <i class="fas fa-trash-alt">Delete</i>
+          </span>
+        </a>
     </div>
-</span>
-{% empty %}
-<article class="message">
-    <div class="message-header">
-        <p>No Toys Available</p>
-    </div>
-</article>
-{% endfor %}
-<div class="buttons">
-    <a href="{% url 'dog_update' dog.pk %}"
-    <a href="" class="button is-info">
-        <span class="icon">
-            <i class="fas fa-edit">Edit</i>
-        </span>
-    </a>
-</a>
-<a href="/dogs/{{dog.pk}}/delete" class="button is-danger">
-    <span class="icon">
-        <i class="fas fa-trash-alt">Delete</i>
-    </span>
-</a>
-</a>
-</div>
-<form class="mb-5" action="{% url 'toy_create' dog.pk %}" method="post">
-    {% csrf_token %}
-    <div class="field has-addons">
-        <div class="control">
-            <input
-            class="input"
-            type="text"
-            name="title"
-            placeholder="Toy"
-            required
-            />
-        </div>
-        <div class="control">
-            <input
-            class="input"
-            type="text"
-            name="img"
-            placeholder="Image"
-            required
-            />
-        </div>
-        <div class="control">
-            <input class="button is-primary" type="submit" value="Add Toy" />
-        </div>
-    </div>
-</form>
-<div class="detail__dogs mb-5">
-    <h3 class="title is-3">Toys</h3>
-    
     {% for play in dog.toys.all %}
     <div class="toy">
         <span>{{forloop.counter}}</span>
         <span><b>{{play.title}}</b></span>
         <span><img class='toy-pic' src='{{play.img}}' alt='{{play.title}}' /></span>
-        <span>
-            <div class="dropdown">
-                
-                <div class="dropdown-trigger">
-                    <button
-                    class="button"
-                    aria-haspopup="true"
-                    aria-controls="dropdown-menu"
-                    >
-                    <span>Add to Favorites List</span>
-                    <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </button>
-                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                            {% for fav in favorites %}
-                            <a
-                            href="{% url 'favorite_list_assoc' fav.pk toy.pk %}?assoc=add"
-                            class="dropdown-item"
-                            >
-                            {{fav.title}}
-                        </a>
-                        {% endfor %}
-                    </div>
-                        </div>
-                </div>
+        <div class="dropdown">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+            >
+              <span>Add to Favorites List</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              {% for fav in favorites %}
+              <span>{{forloop.counter}}</span>
+              <a
+              href="{% url 'favorite_list_assoc' fav.pk play.pk %}?assoc=add"
+              class="dropdown-item"
+            >
+                {{fav.title}}
+              </a>
+              {% endfor %}
             </div>
-            </div>
+          </div>
+        </div>
+    </div>
+    <span>
         </span>
+
         {% empty %}
+            <article class="message">
+                <div class="message-header">
+                    <p>No Toys Available</p>
+                </div>
+            </article>
+
+        {% endfor %}
     </div>
+  </div>
+  <div class="detail__about">
+    <h4 class="title is-4">About</h4>
+    <p>{{dog.bio}}</p>
+  </div>
 </div>
-    <div class="detail__about">
-        <h4 class="title is-4">About</h4>
-        <p>{{dog.bio}}</p>
-    </div>
-</div>
-{% endfor %}
+
 {% endblock %}
